@@ -1,0 +1,4 @@
+qa/
+*.log
+*.apk
+__pycache__/
