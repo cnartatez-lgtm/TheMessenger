@@ -45,4 +45,9 @@ function openLinkedDetails() {
   if (location.hash === '#demo-notice') document.querySelector('#demo-notice').open = true;
 }
 addEventListener('hashchange', openLinkedDetails);
+for (const noticeLink of document.querySelectorAll('a[href="#demo-notice"]')) {
+  noticeLink.addEventListener('click', () => {
+    document.querySelector('#demo-notice').open = true;
+  });
+}
 openLinkedDetails();
