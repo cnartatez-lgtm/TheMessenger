@@ -14,13 +14,13 @@ For a new APK, create a new release tag, scan that exact file, and update the do
 
 ## Current demo
 
-- Version: 0.1.0, build 16 November 2026
+- Version: 0.1.0, Free Movement build of 18 November 2026
 - File: `TheMessenger-Android.apk`
-- Size: 144,548,998 bytes (137.85 MiB)
+- Size: 144,572,558 bytes (137.88 MiB)
 - Android 7.1+ (API 25), ARM64; English; landscape
-- SHA-256: `d4827796dac684fe29c5d2960a644c5a36b4e7368572e5cd6a36fc0c8f9e6c81`
-- VirusTotal, 17 November 2026: **0 / 66 detections**, 8 engines unable to process this file type
-- [Public scan report](https://www.virustotal.com/gui/file/d4827796dac684fe29c5d2960a644c5a36b4e7368572e5cd6a36fc0c8f9e6c81)
+- SHA-256: `9d7304249e1724406a2686dfa07d7d2a9fe5f50d49905baec0a145c913d53af9`
+- The Android signature passed verification. The installed APK on the Samsung Galaxy Note20 Ultra matched this checksum.
+- [VirusTotal report for the previous 16 November build](https://www.virustotal.com/gui/file/d4827796dac684fe29c5d2960a644c5a36b4e7368572e5cd6a36fc0c8f9e6c81)
 
 A malware scan is not a certification, vulnerability audit or guarantee of safety. This is an experimental demo, provided as is. See the site's demo notice.
 
