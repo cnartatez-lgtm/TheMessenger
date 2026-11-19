@@ -8,6 +8,7 @@
   const poster = exhibit.querySelector('.exhibit-poster');
   const openButton = exhibit.querySelector('.exhibit-open');
   const exitButton = exhibit.querySelector('.exhibit-exit');
+  const walkButton = exhibit.querySelector('.exhibit-walk');
   const toolbar = exhibit.querySelector('.exhibit-toolbar');
   const help = exhibit.querySelector('.exhibit-help');
   const status = exhibit.querySelector('.exhibit-status');
@@ -32,6 +33,8 @@
     openButton.querySelector('span').textContent =
       loading ? 'Loading…' : state === 'error' ? 'Try 3D again' : 'View in 3D';
     exitButton.hidden = !ready && !loading;
+    walkButton.hidden = !ready || !stage?.mixer;
+    walkButton.textContent = stage?.walking ? 'Pause walk' : 'Play walk';
     toolbar.hidden = !ready;
     help.hidden = !ready;
     status.textContent = message;
@@ -66,13 +69,14 @@
     pending = request;
     const {model, angle, src} = selected.dataset;
     const label = selected.textContent.trim();
+    stage?.setWalking(false);
     show('loading', 'Loading ' + label + ' in 3D…');
     try {
-      const {ModelStage} = await import('./model-stage.js?v=20261119');
+      const {ModelStage} = await import('./model-stage.js?v=walk1');
       if (request.signal.aborted) return;
       if (!stage) {
         stage = new ModelStage(viewport, () => {
-          close('error', 'The graphics connection was interrupted. Open the 3D view to try again.');
+          close('error', 'The 3D view stopped working. Please open it again to try one more time.');
         });
       }
       await stage.load(src || 'assets/models/' + model + '.glb', angle.split(',').map(Number), label, request.signal);
@@ -83,8 +87,8 @@
     } catch (error) {
       if (request.signal.aborted) return;
       close('error', error.message === 'WebGL is unavailable'
-        ? '3D graphics are unavailable in this browser. You can still browse the model previews.'
-        : 'The 3D view could not load. Try again or choose another model.');
+        ? 'This browser cannot show 3D graphics, but you can still see the images of the models.'
+        : 'The 3D view did not load. Please try again, or choose another model.');
       if (focusCanvas) openButton.focus({preventScroll: true});
     }
   }
@@ -105,6 +109,10 @@
     });
   }
   openButton.addEventListener('click', () => explore(true));
+  walkButton.addEventListener('click', () => {
+    stage.setWalking(!stage.walking);
+    walkButton.textContent = stage.walking ? 'Pause walk' : 'Play walk';
+  });
   exitButton.addEventListener('click', () => {
     close();
     openButton.focus({preventScroll: true});

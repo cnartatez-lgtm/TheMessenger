@@ -4,7 +4,7 @@ The public home of the Android development demo: https://cnartatez-lgtm.github.i
 
 A mobile-first English landing page with gameplay captures, four interactive 3D models from the game, development artwork and a direct APK download. GitHub Pages hosts the site and GitHub Releases serves the APK.
 
-Created by Christian Nartatez under the leadership and direction of the pastors of EIC Paris, for EIC Kids Ministry.
+Created by Christian Nartatez for EIC Kids Ministry, with the support and under the direction of the pastors of EIC Paris.
 
 ## Preview and update
 
@@ -30,7 +30,7 @@ A malware scan is not a certification, vulnerability audit or guarantee of safet
 
 Game images and character/environment artwork belong to this project and are not offered as a reusable asset pack. `city.webp`, `gameplay.webp`, `rooftops.webp`, `market.webp` and `waterfront.webp` are game captures. `tychicus.webp`, `roman.webp` and `tower.webp` are development artwork. `meshy-house.jpg` is a crop of the actual house model preview in the creator's Meshy workspace.
 
-The self-contained GLBs in `assets/models/` show the rooftop house, Tychicus, a Roman guard and the watchtower. Each has a WebP still rendered from the same model. Opening a 3D view loads the selected GLB on demand. With the game art available in the adjacent Unity checkout, `blender --background --python tools/prepare-models.py` regenerates the four GLBs.
+The self-contained GLBs in `assets/models/` show the rooftop house, Tychicus, a Roman guard and the watchtower. Each has a WebP still rendered from the same model. The two characters have in-place walking loops from the game. Visitors can pause the walk or rotate the model while it plays. The walk starts paused when the visitor has requested reduced motion. Opening a 3D view loads the selected GLB on demand. With the game art available in the adjacent Unity checkout, `blender --background --python tools/prepare-models.py` regenerates the four GLBs.
 
 Cinzel and Lato are served locally; their Open Font License texts are in `assets/`. The page has no analytics, cookies, forms, tracking scripts, external font requests or third-party image embeds. GitHub and VirusTotal have their own service policies.
 

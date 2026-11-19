@@ -1,8 +1,8 @@
 import {
-  Box3, DirectionalLight, HemisphereLight, Mesh, MOUSE, OrbitControls, PCFShadowMap,
+  AnimationMixer, Box3, DirectionalLight, HemisphereLight, Mesh, MOUSE, OrbitControls, PCFShadowMap,
   PerspectiveCamera, PlaneGeometry, Scene, ShadowMaterial, SRGBColorSpace, TOUCH,
   Vector3, WebGLRenderer, GLTFLoader
-} from './assets/vendor/three-exhibits-r187.min.js';
+} from './assets/vendor/three-exhibits-r187.min.js?v=walk1';
 
 const radians = Math.PI / 180;
 
@@ -11,6 +11,7 @@ function releaseModel(root) {
   root.removeFromParent();
   root.traverse(node => {
     if (!node.isMesh) return;
+    if (node.isSkinnedMesh) node.skeleton.dispose();
     node.geometry.dispose();
     for (const material of [].concat(node.material)) {
       const texture = material.map;
@@ -67,16 +68,36 @@ export class ModelStage {
     this.floor.receiveShadow = true;
     this.scene.add(sky, this.sun, fill, this.floor);
     this.loader = new GLTFLoader();
+    this.onScreen = !('IntersectionObserver' in window);
     this.requestDraw = () => {
-      if (this.frame || this.disposed) return;
-      this.frame = requestAnimationFrame(() => {
-        this.frame = 0;
-        if (this.model) this.renderer.render(this.scene, this.camera);
-      });
+      if (!this.frame && !this.disposed) this.frame = requestAnimationFrame(this.draw);
+    };
+    this.draw = now => {
+      this.frame = 0;
+      if (!this.model || this.disposed) return;
+      if (this.walking && this.onScreen && !document.hidden) {
+        const elapsed = this.lastDraw === null ? 0 : Math.min((now - this.lastDraw) / 1000, 0.1);
+        this.mixer.update(elapsed);
+        this.lastDraw = now;
+        this.requestDraw();
+      }
+      this.renderer.render(this.scene, this.camera);
     };
     this.controls.addEventListener('change', this.requestDraw);
     this.events = new AbortController();
     const options = {signal: this.events.signal};
+    const restartClock = () => {
+      this.lastDraw = null;
+      if (!document.hidden) this.requestDraw();
+    };
+    document.addEventListener('visibilitychange', restartClock, options);
+    if ('IntersectionObserver' in window) {
+      this.visibility = new IntersectionObserver(([entry]) => {
+        this.onScreen = entry.isIntersecting;
+        restartClock();
+      });
+      this.visibility.observe(host);
+    }
     canvas.addEventListener('keydown', event => this.onKey(event), options);
     canvas.addEventListener('pointerdown', () => canvas.focus({preventScroll: true}), options);
     canvas.addEventListener('webglcontextlost', event => {
@@ -97,16 +118,30 @@ export class ModelStage {
     const response = await fetch(url, {signal});
     if (!response.ok) throw new Error('Model download failed');
     const bytes = await response.arrayBuffer();
-    const {scene: model} = await this.loader.parseAsync(bytes, '');
+    const {scene: model, animations} = await this.loader.parseAsync(bytes, '');
     if (signal.aborted || this.disposed) {
       releaseModel(model);
       return;
     }
-    releaseModel(this.model);
+    this.clearModel();
     this.model = model;
-    model.traverse(node => { if (node.isMesh) node.castShadow = true; });
+    let walkBounds;
+    model.traverse(node => {
+      if (node.isMesh) node.castShadow = true;
+      if (node.isSkinnedMesh) node.frustumCulled = false;
+      if (node.userData.walkBounds) walkBounds = node.userData.walkBounds;
+    });
     this.scene.add(model);
-    this.bounds = new Box3().setFromObject(model);
+    const walk = animations.find(clip => clip.name === 'Walk');
+    if (walk) {
+      this.mixer = new AnimationMixer(model);
+      this.mixer.clipAction(walk).play();
+      this.mixer.update(0);
+    }
+    this.setWalking(Boolean(walk) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this.bounds = walkBounds
+      ? new Box3(new Vector3().fromArray(walkBounds), new Vector3().fromArray(walkBounds, 3))
+      : new Box3().setFromObject(model);
     this.center = this.bounds.getCenter(new Vector3());
     const [yaw, pitch] = angles.map(a => a * radians);
     this.homeDirection = new Vector3(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
@@ -116,6 +151,23 @@ export class ModelStage {
     this.controls.maxTargetRadius = this.bounds.getSize(new Vector3()).length() * 0.85;
     this.reset();
     this.renderer.render(this.scene, this.camera);
+  }
+
+  setWalking(enabled) {
+    this.walking = Boolean(this.mixer && enabled);
+    this.lastDraw = null;
+    this.requestDraw();
+  }
+
+  clearModel() {
+    if (this.mixer) {
+      this.mixer.stopAllAction();
+      this.mixer.uncacheRoot(this.model);
+      this.mixer = null;
+    }
+    this.walking = false;
+    releaseModel(this.model);
+    this.model = null;
   }
 
   fitDistance() {
@@ -201,10 +253,11 @@ export class ModelStage {
     this.disposed = true;
     this.events.abort();
     this.observer?.disconnect();
+    this.visibility?.disconnect();
     cancelAnimationFrame(this.frame);
     this.controls.removeEventListener('change', this.requestDraw);
     this.controls.dispose();
-    releaseModel(this.model);
+    this.clearModel();
     this.floor.geometry.dispose();
     this.floor.material.dispose();
     this.sun.shadow.dispose();
