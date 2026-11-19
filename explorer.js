@@ -64,7 +64,7 @@
     pending?.abort();
     const request = new AbortController();
     pending = request;
-    const {model, angle} = selected.dataset;
+    const {model, angle, src} = selected.dataset;
     const label = selected.textContent.trim();
     show('loading', 'Loading ' + label + ' in 3D…');
     try {
@@ -75,7 +75,7 @@
           close('error', 'The graphics connection was interrupted. Open the 3D view to try again.');
         });
       }
-      await stage.load('assets/models/' + model + '.glb', angle.split(',').map(Number), label, request.signal);
+      await stage.load(src || 'assets/models/' + model + '.glb', angle.split(',').map(Number), label, request.signal);
       if (request.signal.aborted) return;
       show('ready');
       setMode('rotate');

@@ -2,6 +2,7 @@
 
 import shutil
 import tempfile
+from math import radians
 from pathlib import Path
 
 import bpy
@@ -27,20 +28,39 @@ def import_copy(name, scratch):
     return list(bpy.context.selected_objects)
 
 
-def export(slug, source, texture, idle=None, frame=1):
+def pose_tychicus(rig):
+    # Lower the upper arms and bend each elbow from the idle pose, keeping the cuffs clear of the robe.
+    world = rig.matrix_world.copy()
+    to_rig = world.inverted()
+    for joint, axis, degrees in (
+        ("LeftArm", "Y", 5), ("RightArm", "Y", -2),
+        ("LeftForeArm", "X", -32), ("RightForeArm", "X", -15),
+    ):
+        bone = rig.pose.bones[joint]
+        pose = world @ bone.matrix
+        turned = Matrix.Rotation(radians(degrees), 4, axis) @ pose
+        turned.translation = pose.translation
+        bone.matrix = to_rig @ turned
+        bpy.context.view_layer.update()
+
+
+def export(slug, source, texture, idle=None, frame=1, adjust_pose=None):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     with tempfile.TemporaryDirectory() as folder:
         scratch = Path(folder)
         objects = import_copy(source, scratch)
         mesh, = (obj for obj in objects if obj.type == "MESH")
-        if idle:
+        if idle or adjust_pose:
             rig, = (obj for obj in objects if obj.type == "ARMATURE")
+        if idle:
             clip, = (obj for obj in import_copy(idle, scratch) if obj.type == "ARMATURE")
             rig.animation_data.action = clip.animation_data.action
             rig.animation_data.action_slot = clip.animation_data.action_slot
 
-        # Bake a single in-game pose. The character rig and animation clips stay in Unity.
+        # Bake the gallery pose into the display mesh.
         bpy.context.scene.frame_set(frame)
+        if adjust_pose:
+            adjust_pose(rig)
         graph = bpy.context.evaluated_depsgraph_get()
         evaluated = mesh.evaluated_get(graph)
         geometry = bpy.data.meshes.new_from_object(evaluated, depsgraph=graph)
@@ -82,6 +102,7 @@ def export(slug, source, texture, idle=None, frame=1):
 if __name__ == "__main__":
     OUTPUT.mkdir(parents=True, exist_ok=True)
     export("rooftop-house", "N_CasaAzotea01.fbx", "N_CasaAzotea01_BaseMap.png")
-    export("tychicus", "Tychicus_Desert.fbx", "Tychicus_Desert_BaseColor.png", "Tychicus_Idle_Loop.fbx", 32)
+    export("tychicus", "Tychicus_Desert.fbx", "Tychicus_Desert_BaseColor.png", "Tychicus_Idle_Loop.fbx",
+           frame=12, adjust_pose=pose_tychicus)
     export("roman-guard", "RomanGuard.fbx", "RomanGuard_BaseColor.png", frame=8)
     export("watchtower", "N_TorreAlta01.fbx", "N_TorreAlta01_BaseMap.png")
