@@ -13,6 +13,17 @@
   min-height: 44px;
   align-items: center;
 }
+.demo-guidance {
+  margin: 18px 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--ochre);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.demo-guidance p + p { margin-top: 12px; }
+.demo-guidance strong { display: block; }
+.demo-guidance a { text-decoration: underline; text-underline-offset: 2px; }
 @media(max-width:700px){.download-hint,.scan-box p,.scan-caveat,.scan-box a,.checksum{font-size:12px}.scan-box strong{font-size:13px}}
 
 .exhibit {

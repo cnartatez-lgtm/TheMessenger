@@ -19,7 +19,7 @@ function Get-Optional($url) {
 if($Action -eq 'Create') {
   $existing=Get-Optional $api
   if(-not $existing) {
-    $body=@{name='TheMessenger';description='The Messenger — an Android adventure demo from EIC Kids Ministry. Official website and demo downloads.';private=$false;has_issues=$true;auto_init=$false;homepage='https://cnartatez-lgtm.github.io/TheMessenger/'}|ConvertTo-Json
+    $body=@{name='TheMessenger';description='The Messenger — an Android adventure demo in development under the leadership of the pastors of EIC Paris. Official website and demo downloads.';private=$false;has_issues=$true;auto_init=$false;homepage='https://cnartatez-lgtm.github.io/TheMessenger/'}|ConvertTo-Json
     $existing=Invoke-RestMethod 'https://api.github.com/user/repos' -Method Post -Headers $headers -ContentType 'application/json' -Body $body
   }
   if($existing.private) { throw 'Existing destination is private; refusing to change its visibility.' }
@@ -49,9 +49,9 @@ The Android signature was verified. The APK installed on the test phone has this
 `9d7304249e1724406a2686dfa07d7d2a9fe5f50d49905baec0a145c913d53af9`
 
 ### Demo notice
-This experimental build is under active development and is provided as is, without warranties. Install and use at your own discretion and risk. Bugs, unfinished content and compatibility issues are possible. To the extent permitted by applicable law, the creators and ministry are not liable for damage, data loss or other issues arising from its use. This notice does not exclude rights or liabilities that cannot legally be excluded. Children should have a parent or guardian's permission.
+This experimental build is under active development and is provided as is, without warranties. Install and use at your own discretion and risk. Bugs, unfinished content and compatibility issues are possible. To the extent permitted by applicable law, the creators are not liable for damage, data loss or other issues arising from its use. This notice does not exclude rights or liabilities that cannot legally be excluded. Children should have a parent or guardian's permission.
 
-Created by Christian Nartatez under the leadership and direction of the pastors of EIC Paris, for EIC Kids Ministry.
+Created by Christian Nartatez under the leadership of the pastors of EIC Paris.
 '@
     $body=@{tag_name=$tag;target_commitish='main';name='The Messenger — Free Movement Android Demo';body=$notes;draft=$true;prerelease=$true}|ConvertTo-Json
     $release=Invoke-RestMethod "$api/releases" -Method Post -Headers $headers -ContentType 'application/json' -Body $body

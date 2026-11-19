@@ -4,7 +4,7 @@ The public home of the Android development demo: https://cnartatez-lgtm.github.i
 
 A mobile-first English landing page with gameplay captures, four interactive 3D models from the game, development artwork and a direct APK download. GitHub Pages hosts the site and GitHub Releases serves the APK.
 
-Created by Christian Nartatez for EIC Kids Ministry, with the support and under the direction of the pastors of EIC Paris.
+Created by Christian Nartatez under the leadership of the pastors of EIC Paris.
 
 ## Preview and update
 
