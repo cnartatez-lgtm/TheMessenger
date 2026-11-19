@@ -35,10 +35,16 @@ document.querySelector('#copy-hash').addEventListener('click', async () => {
 
 const sticky = document.querySelector('.mobile-download');
 if ('IntersectionObserver' in window) {
-  new IntersectionObserver(entries => {
-    sticky.classList.toggle('is-hidden', entries.some(entry => entry.isIntersecting));
-    sticky.inert = entries.some(entry => entry.isIntersecting);
-  }, {threshold: 0.1}).observe(document.querySelector('.download-card'));
+  const visible = new Set();
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.1) visible.add(entry.target);
+      else visible.delete(entry.target);
+    }
+    sticky.classList.toggle('is-hidden', visible.size > 0);
+    sticky.inert = visible.size > 0;
+  }, {threshold: 0.1});
+  for (const section of document.querySelectorAll('.download-card, .exhibit')) observer.observe(section);
 }
 
 function openLinkedDetails() {

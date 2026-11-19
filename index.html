@@ -15,8 +15,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="style.css?v=92584a1">
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=models-20261119">
+  <script src="app.js?v=models-20261119" defer></script>
+  <script src="explorer.js?v=20261119" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -26,10 +27,13 @@
     <symbol id="download-icon" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"/></symbol>
     <symbol id="mountain" viewBox="0 0 32 32"><path d="m3 26 10-20 8 15 4-8 5 13H3Zm6-12 4 3 4-3M22 26v-5"/></symbol>
     <symbol id="sun" viewBox="0 0 32 32"><circle cx="16" cy="16" r="6"/><path d="M16 2v4m0 20v4M2 16h4m20 0h4M6 6l3 3m14 14 3 3M6 26l3-3M23 9l3-3"/></symbol>
+    <symbol id="cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Zm-9 5 9 5 9-5m-9 5v10"/></symbol>
+    <symbol id="orbit" viewBox="0 0 24 24"><path d="M4 12c1.5-5.5 14-8 16.5-3.5S14 18 8 17.5M4 8v4l4-1"/><circle cx="12" cy="12" r="2.5"/></symbol>
+    <symbol id="move" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3m12-6 3 3-3 3"/></symbol>
   </defs></svg>
   <header class="header">
     <a class="brand" href="#" aria-label="The Messenger home"><span class="brand-seal"><svg><use href="#scroll"/></svg></span><span>The Messenger</span></a>
-    <nav aria-label="Main navigation"><a href="#journey">The journey</a><a href="#world">The world</a><a class="nav-play" href="#download">Play the demo <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="Main navigation"><a href="#journey">The journey</a><a href="#world">The world</a><a class="nav-models" href="#models">3D models</a><a class="nav-play" href="#download">Play the demo <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
@@ -59,14 +63,67 @@
       </div>
     </section>
 
-    <section class="workshop section wrap" aria-labelledby="workshop-title">
-      <div class="section-heading"><div><p class="eyebrow">03 — From the workshop</p><h2 id="workshop-title">Meet the faces.<br><em>Discover the details.</em></h2></div><p>Every adventure starts with its building blocks. A selection of character artwork and 3D model previews behind the game.</p></div>
+    <section class="workshop section wrap" id="models" aria-labelledby="workshop-title">
+      <div class="section-heading"><div><p class="eyebrow">03 — From the workshop</p><h2 id="workshop-title">Meet the faces.<br><em>Discover the details.</em></h2></div><p>Turn a house to find its rooftop stairs, or take a closer look at the messenger and the guards on his route. Explore four models from the game.</p></div>
+      <div class="exhibit" data-state="poster">
+        <fieldset class="exhibit-picker" disabled>
+          <legend>Choose a 3D model</legend>
+          <div class="exhibit-choices">
+            <button class="exhibit-choice" type="button" aria-pressed="true" aria-controls="exhibit-stage" data-model="rooftop-house" data-angle="-42,25" data-description="A narrow staircase climbs the outside wall and opens onto the flat roof." data-alt="A flat-roofed sandstone house with a narrow staircase along one wall."><img src="assets/models/rooftop-house.webp" alt="" width="72" height="60" loading="lazy"><span>Rooftop house</span></button>
+            <button class="exhibit-choice" type="button" aria-pressed="false" aria-controls="exhibit-stage" data-model="tychicus" data-angle="18,9" data-description="Tychicus carries the letter through Jerusalem in his desert robe and blue scarf." data-alt="Tychicus wearing a dark blue scarf over his desert robe."><img src="assets/models/tychicus.webp" alt="" width="72" height="60" loading="lazy"><span>Tychicus</span></button>
+            <button class="exhibit-choice" type="button" aria-pressed="false" aria-controls="exhibit-stage" data-model="roman-guard" data-angle="-16,11" data-description="A Roman guard on patrol. Look closely at his helmet and the armour over his red tunic." data-alt="A helmeted Roman guard in armour and a red tunic, caught mid-stride."><img src="assets/models/roman-guard.webp" alt="" width="72" height="60" loading="lazy"><span>Roman guard</span></button>
+            <button class="exhibit-choice" type="button" aria-pressed="false" aria-controls="exhibit-stage" data-model="watchtower" data-angle="34,23" data-description="This sandstone watchtower rises above the Fish Quarter and its rooftop paths." data-alt="A tall sandstone watchtower with a raised parapet."><img src="assets/models/watchtower.webp" alt="" width="72" height="60" loading="lazy"><span>Watchtower</span></button>
+          </div>
+        </fieldset>
+        <div class="exhibit-display">
+          <div class="exhibit-frame" id="exhibit-stage">
+            <img class="exhibit-poster" src="assets/models/rooftop-house.webp" alt="A flat-roofed sandstone house with a narrow staircase along one wall." loading="lazy" width="700" height="600">
+            <div class="exhibit-viewport" hidden></div>
+            <button type="button" class="exhibit-open" hidden><svg aria-hidden="true"><use href="#cube"/></svg><span>View in 3D</span></button>
+            <button type="button" class="exhibit-exit" hidden>Exit 3D</button>
+          </div>
+          <div class="exhibit-toolbar" hidden>
+            <div class="exhibit-modes" role="group" aria-label="Drag mode">
+              <button type="button" data-mode="rotate" aria-pressed="true"><svg aria-hidden="true"><use href="#orbit"/></svg>Rotate</button>
+              <button type="button" data-mode="move" aria-pressed="false"><svg aria-hidden="true"><use href="#move"/></svg>Move</button>
+            </div>
+            <div class="exhibit-tools" role="group" aria-label="Zoom and reset">
+              <button type="button" data-tool="out" aria-label="Zoom out" title="Zoom out">−</button>
+              <button type="button" data-tool="in" aria-label="Zoom in" title="Zoom in">+</button>
+              <button type="button" data-tool="reset" aria-label="Reset view">Reset</button>
+            </div>
+          </div>
+          <div class="exhibit-caption">
+            <h3 class="exhibit-name">Rooftop house</h3>
+            <p class="exhibit-description">A narrow staircase climbs the outside wall and opens onto the flat roof.</p>
+            <p class="exhibit-status" role="status" aria-live="polite"></p>
+            <details class="exhibit-help" hidden>
+              <summary>3D controls</summary>
+              <p id="exhibit-instructions">Choose Rotate or Move, then drag or tap an arrow below. Pinch or scroll to zoom. When the model has focus, the arrow keys rotate or move it. Use + and − to zoom, Home to reset, or Escape to exit.</p>
+              <div class="exhibit-steps" role="group" aria-label="Adjust the model in small steps">
+                <button type="button" data-step="left" aria-label="Rotate left">←</button>
+                <button type="button" data-step="right" aria-label="Rotate right">→</button>
+                <button type="button" data-step="up" aria-label="Rotate up">↑</button>
+                <button type="button" data-step="down" aria-label="Rotate down">↓</button>
+              </div>
+            </details>
+            <div class="exhibit-stills">
+              <p>Enable JavaScript to explore in 3D, or open a still image.</p>
+              <a href="assets/models/rooftop-house.webp">Rooftop house</a>
+              <a href="assets/models/tychicus.webp">Tychicus</a>
+              <a href="assets/models/roman-guard.webp">Roman guard</a>
+              <a href="assets/models/watchtower.webp">Watchtower</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3 class="artwork-heading">Development artwork</h3>
       <div class="model-gallery">
         <figure class="model-card"><button class="image-button" data-image="assets/tychicus.webp" data-caption="Tychicus — character development artwork." aria-label="Enlarge Tychicus character artwork"><span class="model-index">01 / Character</span><img src="assets/tychicus.webp" alt="Tychicus in a sandy robe with a dark blue scarf and leather belt" loading="lazy" width="700" height="900"><span class="model-plus" aria-hidden="true">+</span></button><figcaption><h3>Tychicus</h3><p>The messenger at the heart of the journey.</p></figcaption></figure>
         <figure class="model-card"><button class="image-button" data-image="assets/roman.webp" data-caption="Roman guard — character development artwork." aria-label="Enlarge Roman guard character artwork"><span class="model-index">02 / Character</span><img src="assets/roman.webp" alt="Roman guard character with helmet, armour and a red tunic" loading="lazy" width="700" height="900"><span class="model-plus" aria-hidden="true">+</span></button><figcaption><h3>The Roman guard</h3><p>A reason to take the quieter route.</p></figcaption></figure>
-        <figure class="model-card"><button class="image-button model-dark" data-image="assets/meshy-house.jpg" data-caption="Courtyard house — actual 3D model preview captured in Meshy." aria-label="Enlarge the courtyard house 3D model"><span class="model-index">03 / 3D model</span><img src="assets/meshy-house.jpg" alt="A textured sandstone house model with a flat roof and exterior stairs, previewed in Meshy" loading="lazy" width="495" height="430"><span class="model-plus" aria-hidden="true">+</span></button><figcaption><h3>The courtyard house</h3><p>Sandstone, stairs and another way up.</p></figcaption></figure>
+        <figure class="model-card"><button class="image-button model-dark" data-image="assets/meshy-house.jpg" data-caption="Courtyard house — a still from the model in Meshy." aria-label="Enlarge the courtyard house preview image"><span class="model-index">03 / Environment</span><img src="assets/meshy-house.jpg" alt="A textured sandstone house model with a flat roof and exterior stairs, previewed in Meshy" loading="lazy" width="495" height="430"><span class="model-plus" aria-hidden="true">+</span></button><figcaption><h3>The courtyard house</h3><p>Sandstone, stairs and another way up.</p></figcaption></figure>
         <figure class="model-card"><button class="image-button" data-image="assets/tower.webp" data-caption="Sandstone tower — environment development artwork." aria-label="Enlarge the sandstone tower artwork"><span class="model-index">04 / Environment</span><img src="assets/tower.webp" alt="Tall sandstone tower with layered platforms and stairs" loading="lazy" width="700" height="900"><span class="model-plus" aria-hidden="true">+</span></button><figcaption><h3>The sandstone tower</h3><p>A new perspective above the city.</p></figcaption></figure>
-      </div><p class="gallery-note">Character and environment artwork are development references. The courtyard house is a 3D preview from Meshy; these are not gameplay screenshots.</p>
+      </div><p class="gallery-note">The courtyard house is a still from Meshy. The character and tower illustrations show how their designs took shape.</p>
     </section>
 
     <section class="download-section section" id="download" aria-labelledby="download-title"><div class="wrap download-layout">
