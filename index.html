@@ -10,14 +10,29 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="The Messenger. One letter to deliver, one city to cross">
   <meta property="og:description" content="A small adventure game for children, inspired by Tychicus, the messenger of Paul. You can try the Android demo for free.">
-  <meta property="og:image" content="https://cnartatez-lgtm.github.io/TheMessenger/assets/social.jpg">
+  <meta property="og:site_name" content="The Messenger">
+  <meta property="og:image" content="https://cnartatez-lgtm.github.io/TheMessenger/assets/the-messenger-jerusalem.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Messenger title and a sealed letter above the sandstone rooftops of Jerusalem.">
   <meta property="og:url" content="https://cnartatez-lgtm.github.io/TheMessenger/">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="twitter:title" content="The Messenger · One letter to deliver, one city to cross">
+  <meta name="twitter:description" content="Carry Paul's letter through Jerusalem as Tychicus. Explore the game and try the free Android demo.">
+  <meta name="twitter:image" content="https://cnartatez-lgtm.github.io/TheMessenger/assets/the-messenger-jerusalem.jpg">
+  <meta name="twitter:image:alt" content="The Messenger title and a sealed letter above the sandstone rooftops of Jerusalem.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="assets/letter-seal.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/letter-180.png">
+  <meta name="apple-mobile-web-app-title" content="The Messenger">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <link rel="preload" href="assets/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="style.css?v=demo-notice1">
+  <link rel="stylesheet" href="style.css?v=home-screen1">
   <script src="app.js?v=models-20261119" defer></script>
   <script src="explorer.js?v=walk1" defer></script>
+  <script src="install.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -145,8 +160,12 @@
       </div>
     </div></section>
 
-    <section class="practical section wrap" aria-labelledby="practical-title"><div class="practical-heading"><p class="eyebrow">Before you start</p><h2 id="practical-title">Some things that are good to know.</h2><p>A short guide to help you install and try the demo.</p></div><div class="faq">
+    <section class="practical section wrap" aria-labelledby="practical-title"><div class="practical-heading"><p class="eyebrow">Before you start</p><h2 id="practical-title">Some things that are good to know.</h2><p>A short guide to help you install and try the demo. You can also <a href="#install-website">save this website to your home screen</a>.</p></div><div class="faq">
       <details open><summary>How do I install it on Android?</summary><div><ol><li>Tap <strong>Download for Android</strong> and wait until the APK finishes downloading.</li><li>Open the file from your Downloads folder. If Android asks for permission, allow your browser (or your file manager) to install apps from this source.</li><li>Follow the steps of the installation, open <strong>The Messenger</strong> and turn your phone to horizontal.</li></ol><p>After the installation, you can turn off that permission again. Please keep Play Protect active. If it shows you a warning about the app, stop there and read the warning carefully before you continue.</p></div></details>
+      <details id="install-website"><summary>Add this website to your home screen</summary><div><p>Keep the story, artwork and 3D gallery together on your phone or tablet. The playable Android demo has its own download above.</p>
+      <button class="button button-dark" id="install-site" type="button" hidden>Install website</button>
+      <p><strong>Android</strong> · In Chrome, open the browser menu and choose <strong>Add to home screen</strong> or <strong>Install app</strong>.</p>
+      <p><strong>iPhone or iPad</strong> · In Safari, tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>. If shown, turn on <strong>Open as Web App</strong>, then tap <strong>Add</strong>.</p></div></details>
       <details><summary>Is the game finished?</summary><div><p>No, not yet. This is a development demo, so you will probably find parts that are not complete, some bugs, and changes in the graphics, the animations, the controls and the performance. Your progress may not pass to the next versions. The game and this website will keep growing.</p></div></details>
       <details><summary>Will it work on my phone?</summary><div><p>The APK is made for Android phones of 64 bits (ARM64) with Android 7.1 or newer. We tested it on a Samsung Galaxy Note20 Ultra with Android 13, so we cannot promise how it will work on other devices. You will need some extra free space for the installation. For now, it does not work on iPhone.</p></div></details>
       <details><summary>Which version was checked by VirusTotal?</summary><div><p>The public report is for the APK of 16 November. Every new version has its own checksum, so the one you see on the download card belongs to the version of 18 November.</p><p><a href="https://www.virustotal.com/gui/file/d4827796dac684fe29c5d2960a644c5a36b4e7368572e5cd6a36fc0c8f9e6c81" target="_blank" rel="noopener noreferrer">See the VirusTotal report for the APK of 16 November <span aria-hidden="true">↗</span></a></p></div></details>

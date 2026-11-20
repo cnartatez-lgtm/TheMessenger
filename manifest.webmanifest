@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "The Messenger",
+  "short_name": "The Messenger",
+  "description": "Explore Tychicus’s journey through Jerusalem, see the game artwork and try the Android demo.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#29251d",
+  "theme_color": "#29251d",
+  "icons": [
+    { "src": "assets/letter-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/letter-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/letter-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

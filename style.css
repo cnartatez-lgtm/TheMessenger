@@ -23,6 +23,8 @@
 }
 .demo-guidance p + p { margin-top: 12px; }
 .demo-guidance strong { display: block; }
+#install-site[hidden] { display: none; }
+.practical-heading a { text-decoration: underline; text-underline-offset: 3px; }
 .demo-guidance a { text-decoration: underline; text-underline-offset: 2px; }
 @media(max-width:700px){.download-hint,.scan-box p,.scan-caveat,.scan-box a,.checksum{font-size:12px}.scan-box strong{font-size:13px}}
 
